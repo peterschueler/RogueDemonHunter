@@ -1,0 +1,4 @@
+door=x:25 y:30 t:1
+wall=x:125 y:50 t:13
+enemy=x:300 y:400 t:2
+button=x:14 y:12: t:3

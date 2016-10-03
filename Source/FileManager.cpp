@@ -15,24 +15,67 @@ std::vector<std::string> split_str(const std::string& string, char delimeter) {
 }
 
 Level FileManager::loadLevel(const std::string& levelName) {
+	std::cout << "Level path front: " << levelName << std::endl;
 	Level lvl;
 	lvl.name = levelName;
 	std::string path = levelName + ".lvl";
+	std::cout << "Level path back: " << path << std::endl;
 	std::vector<std::string> lines = FileManager::parseFile(path);
 	
 	for (auto line : lines) { std::cout << line << std::endl; }
 	
 	std::vector<std::vector<std::string> > cutLines;
+	
+	std::vector<std::string> wallLines;
+	std::vector<std::string> enemyLines;
+	std::vector<std::string> buttonLines;
+	std::vector<std::string> doorLines;
+	
+	// 1. Split at '=' to ascertain type
 	for (auto line : lines) {
 		std::vector<std::string> strs;
-		for (auto vec : split_str(line, ' ')) {
+		for (auto vec : split_str(line, '=')) {
 			strs.push_back(vec);
 		}
 		cutLines.push_back(strs);
 	}
 	
+	// 2. Sort data from type into right track
 	for (auto line : cutLines) {
-		BlockObject nextObject;
+		if (line.front() == "door") {
+			doorLines.push_back(line.back());
+		} else if (line.front() == "enemy") {
+			enemyLines.push_back(line.back());
+		} else if (line.front() == "button") {
+			buttonLines.push_back(line.back());
+		} else if (line.front() == "wall") {
+			wallLines.push_back(line.back());
+		}
+	}
+	
+	// 3. cut lines for further processing
+	auto lineCutter = [](std::vector<std::string> lines) {
+		std::vector<std::vector<std::string> > cutLines;
+		for (auto line : lines) {
+			std::vector<std::string> strs;
+			for (auto vec : split_str(line, ' ')) {
+				strs.push_back(vec);
+			}
+			cutLines.push_back(strs);
+		}
+		return cutLines;
+	};
+	
+	auto cutWalls = lineCutter(wallLines); 
+	auto cutDoors = lineCutter(doorLines);
+	auto cutEnemies = lineCutter(enemyLines);
+	auto cutButtons = lineCutter(buttonLines);
+	
+	auto prepareObject = [](std::vector<std::vector<std::string> > lines) {
+	};
+	
+	for (auto line : cutWalls) {
+		WallObject nextObject;
 		
 		for (auto iter = line.begin(); iter != line.end(); ++iter) {
 			std::vector<std::string> str = split_str(*iter, ':');
@@ -44,7 +87,52 @@ Level FileManager::loadLevel(const std::string& levelName) {
 				nextObject.type = std::stoi(str.back());
 			}
 		}
-		lvl.blocks.push_back(nextObject);
+		lvl.walls.push_back(nextObject);
+	}
+	for (auto line : cutEnemies) {
+		EnemyObject nextObject;
+		
+		for (auto iter = line.begin(); iter != line.end(); ++iter) {
+			std::vector<std::string> str = split_str(*iter, ':');
+			if (str.front() == "x") {
+				nextObject.x = std::stoi(str.back());
+			} else if (str.front() == "y") {
+				nextObject.y = std::stoi(str.back());
+			} else if (str.front() == "type") {
+				nextObject.type = std::stoi(str.back());
+			}
+		}
+		lvl.enemies.push_back(nextObject);
+	}
+	for (auto line : cutButtons) {
+		ButtonObject nextObject;
+		
+		for (auto iter = line.begin(); iter != line.end(); ++iter) {
+			std::vector<std::string> str = split_str(*iter, ':');
+			if (str.front() == "x") {
+				nextObject.x = std::stoi(str.back());
+			} else if (str.front() == "y") {
+				nextObject.y = std::stoi(str.back());
+			} else if (str.front() == "type") {
+				nextObject.type = std::stoi(str.back());
+			}
+		}
+		lvl.buttons.push_back(nextObject);
+	}
+	for (auto line : cutDoors) {
+		DoorObject nextObject;
+		
+		for (auto iter = line.begin(); iter != line.end(); ++iter) {
+			std::vector<std::string> str = split_str(*iter, ':');
+			if (str.front() == "x") {
+				nextObject.x = std::stoi(str.back());
+			} else if (str.front() == "y") {
+				nextObject.y = std::stoi(str.back());
+			} else if (str.front() == "type") {
+				nextObject.type = std::stoi(str.back());
+			}
+		}
+		lvl.doors.push_back(nextObject);
 	}
 	return lvl;
 }
@@ -53,8 +141,8 @@ bool FileManager::saveLevel(const Level& level) {
 	std::string path = level.name + ".lvl";
 	std::cout << path << std::endl;
 	std::ofstream levelFile(path);
-	for (auto block : level.blocks) {
-		std::string output = std::string("x:") + std::to_string(block.x) + std::string(" y:") + std::to_string(block.y) + std::string(" type:") + std::to_string(block.type) + "\n";
+	for (auto wall : level.walls) {
+		std::string output = std::string("x:") + std::to_string(wall.x) + std::string(" y:") + std::to_string(wall.y) + std::string(" type:") + std::to_string(wall.type) + "\n";
 		levelFile << output;
 	}
 }
