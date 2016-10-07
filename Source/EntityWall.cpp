@@ -64,6 +64,18 @@ EntityWall::EntityWall(int _x, int _y, int _type): type(EntityWall::Type(_type))
 				setPosition({static_cast<float>(_x), static_cast<float>(_y + 8)});
 			}
 		}
+	} else if (type == outer_door) {
+		if (_y == 0) {
+				sprite.rotate(90.f);
+				setPosition({static_cast<float>(_x + 8), static_cast<float>(_y)});
+			} else if (_y == 136) {
+				sprite.rotate(270.f);
+				setPosition({static_cast<float>(_x), static_cast<float>(_y + 8)});
+			}
+			if (_x == 144) {
+				sprite.rotate(180.f);
+				setPosition({static_cast<float>(_x + 16), static_cast<float>(getPosition().y + 8)});
+			}
 	}
 }
 
@@ -77,6 +89,8 @@ void EntityWall::attachTexture(std::string path) {
 		rect = sf::IntRect(16,8,16,8); 
 	} else if (type == outer_third) {
 		rect = sf::IntRect(16,0,16,8);
+	} else if (type == outer_door) {
+		rect = sf::IntRect(32,8,16,8);
 	}
 	if (texture.loadFromFile(path)) {
 		sprite.setTexture(texture);

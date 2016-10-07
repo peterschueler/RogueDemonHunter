@@ -1,6 +1,6 @@
 #include "../Include/Entity.hpp"
 
-Entity::Entity(): gravityOn(false), bottom(0.f), color(sf::Color::Transparent) {
+Entity::Entity(): gravityOn(false), bottom(0.f), color(sf::Color::Transparent), isDeleted(false) {
 	attachTexture();
 // 	sprite.setColor(color);
 }
@@ -29,6 +29,14 @@ void Entity::setDirection(float x, float y) {
 
 sf::Vector2f Entity::getDirection() const {
 	return direction;
+}
+
+void Entity::setDeleted(bool _deleted) {
+	isDeleted = _deleted;
+}
+
+bool Entity::getDeleted() const {
+	return isDeleted;
 }
 
 void Entity::setColor(sf::Color col) {

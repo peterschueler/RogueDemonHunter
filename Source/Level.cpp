@@ -18,13 +18,31 @@ Level::Level(std::string path) {
 }
 
 std::vector<EntityEnemy*> Level::getEnemies() {
-	return enemies;
+	std::vector<EntityEnemy*> undeletedEnemies;
+	for (auto enemy : enemies) {
+		if (enemy->getDeleted() == false) {
+			undeletedEnemies.push_back(enemy);
+		}
+	}
+	return undeletedEnemies;
 }
 
 std::vector<EntityWall*> Level::getWalls() const {
-	return walls;
+	std::vector<EntityWall*> undeletedWalls;
+	for (auto wall : walls) {
+		if (wall->getDeleted() == false) {
+			undeletedWalls.push_back(wall);
+		}
+	}
+	return undeletedWalls;
 }
 
 std::vector<EntityButton*> Level::getButtons() {
-	return buttons;
+	std::vector<EntityButton*> undeletedButtons;
+	for (auto button : buttons) {
+		if (button->getDeleted() == false) {
+			undeletedButtons.push_back(button);
+		}
+	}
+	return undeletedButtons;
 }

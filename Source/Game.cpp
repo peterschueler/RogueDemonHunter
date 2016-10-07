@@ -30,6 +30,9 @@ bool Game::update(sf::Time delta) {
 
 void Game::draw() {
 	window.draw(background);
+	for (auto button : currentLevel.getButtons()) {
+		window.draw(*button);
+	}
 	window.draw(*heroine);
 	
 	for (auto wall : currentLevel.getWalls()) {
@@ -42,14 +45,26 @@ void Game::input(Command* command) {
 }
 
 void Game::checkCollisions() {
-	if (heroine->getPosition().x < 18) {
-		heroine->setPosition(heroine->getPosition().x + 2, heroine->getPosition().y);	
-	} else if (heroine->getPosition().x > 142) {
-		heroine->setPosition(heroine->getPosition().x - 2, heroine->getPosition().y);
+	// What needs to happen when the key is picked up?
+	// 1. key disappears
+	// 2. door opens: the tiles move until out of sight and then get removed
+	for (auto button : currentLevel.getButtons()) {
+		if (heroine->borders().intersects(button->borders())) {
+			button->setDeleted(true);
+		}
 	}
-	if (heroine->getPosition().y < 18) {
-		heroine->setPosition(heroine->getPosition().x, heroine->getPosition().y + 2);
-	} else if (heroine->getPosition().y > 126) {
-		heroine->setPosition(heroine->getPosition().x, heroine->getPosition().y - 2);
+	for (auto wall : currentLevel.getWalls()) {
+		if (heroine->borders().intersects(wall->borders())) {
+			if (heroine->getPosition().x < 18) {
+				heroine->setPosition(heroine->getPosition().x + 2, heroine->getPosition().y);	
+			} else if (heroine->getPosition().x > 142) {
+				heroine->setPosition(heroine->getPosition().x - 2, heroine->getPosition().y);
+			}
+			if (heroine->getPosition().y < 18) {
+				heroine->setPosition(heroine->getPosition().x, heroine->getPosition().y + 2);
+			} else if (heroine->getPosition().y > 126) {
+				heroine->setPosition(heroine->getPosition().x, heroine->getPosition().y - 2);
+			}
+		}
 	}
 }

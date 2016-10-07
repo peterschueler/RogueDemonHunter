@@ -18,6 +18,9 @@ public:
 	virtual void setGrounded(float);
 	virtual float getGrounded() const;
 	
+	virtual void setDeleted(bool);
+	virtual bool getDeleted() const;
+	
 	virtual void setColor(sf::Color);
 	
 	virtual void applyGravity(bool);
@@ -34,6 +37,8 @@ protected:
 	
 	bool gravityOn;
 	float bottom;
+	
+	bool isDeleted;
 };
 
 #endif
