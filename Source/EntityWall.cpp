@@ -25,6 +25,30 @@ EntityWall::EntityWall(int _x, int _y, int _type): type(EntityWall::Type(_type))
 			sprite.rotate(180.f);
 			setPosition({static_cast<float>(_x + 16), static_cast<float>(getPosition().y + 8)});
 		}
+	} else if (type == outer_second) {
+		if (_y == 0) {
+			sprite.rotate(90.f);
+			setPosition({static_cast<float>(_x + 8), static_cast<float>(_y)});
+		} else if (_y == 136) {
+			sprite.rotate(270.f);
+			setPosition({static_cast<float>(_x), static_cast<float>(_y + 8)});
+		}
+		if (_x == 144) {
+			sprite.rotate(180.f);
+			setPosition({static_cast<float>(_x + 16), static_cast<float>(getPosition().y + 8)});
+		}
+	} else if (type == outer_third) {
+		if (_y == 0) {
+			sprite.rotate(90.f);
+			setPosition({static_cast<float>(_x + 8), static_cast<float>(_y)});
+		} else if (_y == 136) {
+			sprite.rotate(270.f);
+			setPosition({static_cast<float>(_x), static_cast<float>(_y + 8)});
+		}
+		if (_x == 144) {
+			sprite.rotate(180.f);
+			setPosition({static_cast<float>(_x + 16), static_cast<float>(getPosition().y + 8)});
+		}
 	} else if (type == outer_corner) {
 		if (_x == 144) {
 			if (_y == 0) {
@@ -48,15 +72,11 @@ void EntityWall::attachTexture(std::string path) {
 	if (type == outer_corner) {
 		rect = sf::IntRect(0,0,16,16);
 	} else if (type == outer_first) {
-		rect = sf::IntRect(16,0,16,8);
+		rect = sf::IntRect(32,0,16,8);
 	} else if (type == outer_second) {
 		rect = sf::IntRect(16,8,16,8); 
-	} else if (type == inner_corner) {
-		rect = sf::IntRect(40,0,8,8);
-	} else if (type == inner_first) {
-		rect = sf::IntRect(32,0,8,8);
-	} else if (type == inner_second) {
-		rect = sf::IntRect(32,8,8,8);
+	} else if (type == outer_third) {
+		rect = sf::IntRect(16,0,16,8);
 	}
 	if (texture.loadFromFile(path)) {
 		sprite.setTexture(texture);

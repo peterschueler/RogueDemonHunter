@@ -23,9 +23,7 @@ private:
 		outer_corner,
 		outer_first,
 		outer_second,
-		inner_first,
-		inner_second,
-		inner_corner
+		outer_third
 	};
 	Type type;
 };
