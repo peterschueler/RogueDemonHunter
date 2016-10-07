@@ -5,6 +5,8 @@ class Interactable {
 public:
 	Interactable();
 	virtual ~Interactable() {};
+	
+	virtual void setDirection(float, float) = 0;
 };
 
 #endif

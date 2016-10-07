@@ -14,9 +14,9 @@ std::vector<std::string> split_str(const std::string& string, char delimeter) {
 	return data;
 }
 
-Level FileManager::loadLevel(const std::string& levelName) {
+FileLevel FileManager::loadLevel(const std::string& levelName) {
 	std::cout << "Level path front: " << levelName << std::endl;
-	Level lvl;
+	FileLevel lvl;
 	lvl.name = levelName;
 	std::string path = levelName + ".lvl";
 	std::cout << "Level path back: " << path << std::endl;
@@ -33,11 +33,15 @@ Level FileManager::loadLevel(const std::string& levelName) {
 	
 	// 1. Split at '=' to ascertain type
 	for (auto line : lines) {
-		std::vector<std::string> strs;
-		for (auto vec : split_str(line, '=')) {
-			strs.push_back(vec);
+		if (line[0] == '#') {
+			continue;
+		} else {
+			std::vector<std::string> strs;
+			for (auto vec : split_str(line, '=')) {
+				strs.push_back(vec);
+			}
+			cutLines.push_back(strs);
 		}
-		cutLines.push_back(strs);
 	}
 	
 	// 2. Sort data from type into right track
@@ -71,6 +75,7 @@ Level FileManager::loadLevel(const std::string& levelName) {
 	auto cutEnemies = lineCutter(enemyLines);
 	auto cutButtons = lineCutter(buttonLines);
 	
+	// 4. create objects from read lines
 	auto prepareObject = [](std::vector<std::vector<std::string> > lines) {
 	};
 	
@@ -83,7 +88,7 @@ Level FileManager::loadLevel(const std::string& levelName) {
 				nextObject.x = std::stoi(str.back());
 			} else if (str.front() == "y") {
 				nextObject.y = std::stoi(str.back());
-			} else if (str.front() == "type") {
+			} else if (str.front() == "t") {
 				nextObject.type = std::stoi(str.back());
 			}
 		}
@@ -98,7 +103,7 @@ Level FileManager::loadLevel(const std::string& levelName) {
 				nextObject.x = std::stoi(str.back());
 			} else if (str.front() == "y") {
 				nextObject.y = std::stoi(str.back());
-			} else if (str.front() == "type") {
+			} else if (str.front() == "t") {
 				nextObject.type = std::stoi(str.back());
 			}
 		}
@@ -113,7 +118,7 @@ Level FileManager::loadLevel(const std::string& levelName) {
 				nextObject.x = std::stoi(str.back());
 			} else if (str.front() == "y") {
 				nextObject.y = std::stoi(str.back());
-			} else if (str.front() == "type") {
+			} else if (str.front() == "t") {
 				nextObject.type = std::stoi(str.back());
 			}
 		}
@@ -128,7 +133,7 @@ Level FileManager::loadLevel(const std::string& levelName) {
 				nextObject.x = std::stoi(str.back());
 			} else if (str.front() == "y") {
 				nextObject.y = std::stoi(str.back());
-			} else if (str.front() == "type") {
+			} else if (str.front() == "t") {
 				nextObject.type = std::stoi(str.back());
 			}
 		}
@@ -137,7 +142,7 @@ Level FileManager::loadLevel(const std::string& levelName) {
 	return lvl;
 }
 
-bool FileManager::saveLevel(const Level& level) {
+bool FileManager::saveLevel(const FileLevel& level) {
 	std::string path = level.name + ".lvl";
 	std::cout << path << std::endl;
 	std::ofstream levelFile(path);

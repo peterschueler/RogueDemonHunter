@@ -2,7 +2,7 @@
 
 Entity::Entity(): gravityOn(false), bottom(0.f), color(sf::Color::Transparent) {
 	attachTexture();
-	sprite.setColor(color);
+// 	sprite.setColor(color);
 }
 
 void Entity::update(sf::Time delta) {

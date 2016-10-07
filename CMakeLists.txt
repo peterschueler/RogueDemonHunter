@@ -16,7 +16,7 @@ CONFIGURE_FILE(
 INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}")
 
 SET(EXECUTABLE_NAME "RogueDemonHunter")
-ADD_EXECUTABLE(${EXECUTABLE_NAME} Source/Main.cpp Source/Game.cpp Source/Menu.cpp Source/Entity.cpp Source/Settings.cpp Source/GameState.cpp Source/MenuState.cpp Source/Application.cpp Source/InputHandler.cpp Source/CommandMove.cpp Source/Interactable.cpp Source/FileManager.cpp)
+ADD_EXECUTABLE(${EXECUTABLE_NAME} Source/Main.cpp Source/Game.cpp Source/Menu.cpp Source/Entity.cpp Source/Settings.cpp Source/GameState.cpp Source/MenuState.cpp Source/Application.cpp Source/InputHandler.cpp Source/CommandMove.cpp Source/Interactable.cpp Source/FileManager.cpp Source/EntityHeroine.cpp Source/Level.cpp Source/EntityWall.cpp Source/EntityEnemy.cpp Source/EntityButton.cpp)
 
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake_Modules" ${CMAKE_MODULE_PATH})
 

@@ -8,6 +8,7 @@
 
 #include "Canvas.hpp"
 #include "Entities.hpp"
+#include "Level.hpp"
 
 class Game : public Canvas {
 public:
@@ -20,8 +21,19 @@ public:
 	void stop() {}
 	
 private:
+	void checkCollisions();
+	
+private:
 	sf::RenderWindow& window;
 	sf::FloatRect bounds;
+	
+	EntityHeroine* heroine;
+	
+	Level currentLevel;
+	
+	sf::View viewPort;
+	sf::Sprite background;
+	sf::Texture backgroundTexture;
 };
 
 #endif

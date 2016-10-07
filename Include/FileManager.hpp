@@ -4,15 +4,15 @@
 #include <string>
 #include <vector>
 
-#include "Level.hpp"
+#include "FileLevel.hpp"
 #include "Settings.hpp"
 
 std::vector<std::string> split_str(const std::string&, char);
 
 class FileManager {
 public:
-	static Level loadLevel(const std::string&);
-	static bool saveLevel(const Level&);
+	static FileLevel loadLevel(const std::string&);
+	static bool saveLevel(const FileLevel&);
 	
 	static void loadSettings(const std::string&);
 	static bool saveSettings(const Settings&);
