@@ -5,7 +5,7 @@
 #include <string>
 #include <cstdlib>
 
-Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576), level(Level(1)), viewPort(window.getDefaultView()), movedDistance({0,0}), movingToNextLevel(false), currentLevel(1) {
+Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576), level(Level(1)), viewPort(window.getDefaultView()), movedDistance({0,0}), movingToNextLevel(false), currentLevel(1), monsterLoop(0) {
 	EntityHeroine* her = new EntityHeroine();
 	her->setPosition(50, 40);
 	heroine = std::move(her);
@@ -29,8 +29,12 @@ Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576
 
 bool Game::update(sf::Time delta) {
 	checkCollisions();
+	moveMonsters(delta);
 	if (!movingToNextLevel) {
 		heroine->update(delta);
+		for (auto enemy : level.getEnemies()) {
+			enemy->update(delta);
+		}
 	}
 	for (auto wall : level.getWalls()) {
 		wall->update(delta);
@@ -46,6 +50,10 @@ void Game::draw() {
 		window.draw(*button);
 	}
 	window.draw(*heroine);
+	
+	for (auto enemy : level.getEnemies()) {
+		window.draw(*enemy);
+	}
 	
 	for (auto wall : level.getWalls()) {
 		window.draw(*wall);
@@ -107,9 +115,8 @@ void Game::changeLevels(sf::Time delta) {
 			level.closeWalls();
 			movedDistance = sf::Vector2f({0,0});
 			moved_y = 0;
-			movingToNextLevel = false;
 			currentLevel++;
-			level.moveToLevel(currentLevel);
+			movingToNextLevel = !level.moveToLevel(currentLevel);
 		}
 	} else if (movedDistance.y == -144) {
 		background.move(0, movement);
@@ -118,9 +125,8 @@ void Game::changeLevels(sf::Time delta) {
 			level.closeWalls();
 			movedDistance = sf::Vector2f({0,0});
 			moved_y = 0;
-			movingToNextLevel = false;
 			currentLevel++;
-			level.moveToLevel(currentLevel);
+			movingToNextLevel	 = !level.moveToLevel(currentLevel);
 		}
 	}
 	if (movedDistance.x == 160) {
@@ -130,9 +136,8 @@ void Game::changeLevels(sf::Time delta) {
 			level.closeWalls();
 			movedDistance = sf::Vector2f({0,0});
 			moved_x = 0;
-			movingToNextLevel = false;
 			currentLevel++;
-			level.moveToLevel(currentLevel);
+			movingToNextLevel = !level.moveToLevel(currentLevel);
 		}
 	} else if (movedDistance.x == 160) {
 		background.move(movement,0);
@@ -141,9 +146,18 @@ void Game::changeLevels(sf::Time delta) {
 			level.closeWalls();
 			movedDistance = sf::Vector2f({0,0});
 			moved_x = 0;
-			movingToNextLevel = false;
 			currentLevel++;
-			level.moveToLevel(currentLevel);
+			movingToNextLevel = !level.moveToLevel(currentLevel);
+		}
+	}
+}
+
+void Game::moveMonsters(sf::Time delta) {
+	monsterLoop += delta.asSeconds();
+	if (monsterLoop > 0.5) {
+		for (auto enemy : level.getEnemies()) {
+			enemy->walk();
+			monsterLoop = 0;
 		}
 	}
 }

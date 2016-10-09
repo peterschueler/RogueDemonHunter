@@ -15,11 +15,17 @@ public:
 	void setDirection(float, float);
 	sf::Vector2f getDirection() const;
 	
+	void walk();
+	
 protected:
 	void attachTexture(std::string);
 	
 private:
 	void animate();
+	void flip();
+	float valley_y;
+	int stepsTaken;
+	int maxSteps;
 	
 	enum Direction {
 		up,

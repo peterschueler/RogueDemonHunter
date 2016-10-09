@@ -70,3 +70,8 @@ wall=x:144 y:112 t:1
 wall=x:144 y:120 t:1
 # buttons
 button=x:120 y:110 t:0
+# enemies
+enemy=x:120 y:40 t:4
+enemy=x:100 y:110 t:1
+enemy=x:80 y:70 t:5
+enemy=x:30 y:110 t:0

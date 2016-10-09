@@ -154,7 +154,7 @@ void EntityWall::setType(EntityWall::Type _type) {
 			facing = north;
 		} else if (rawPosition.y == 136) {
 			facing = south;
-		} 
+		}
 		if (rawPosition.x == 144) {
 			facing = east;
 		} else if (rawPosition.x == 0) {

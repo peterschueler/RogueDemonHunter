@@ -23,6 +23,7 @@ public:
 private:
 	void checkCollisions();
 	void changeLevels(sf::Time);
+	void moveMonsters(sf::Time);
 	
 private:
 	sf::RenderWindow& window;
@@ -37,6 +38,8 @@ private:
 	float moved_x;
 	bool movingToNextLevel;
 	unsigned int currentLevel;
+	
+	float monsterLoop;
 	
 	sf::View viewPort;
 	sf::Sprite background;
