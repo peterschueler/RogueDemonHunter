@@ -22,21 +22,12 @@ Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576
 }
 
 bool Game::update(sf::Time delta) {
-	if (movedDistance.y != 0) {
-		viewPort.move(0, 16 * delta.asSeconds());
-		moved_y += 16 * delta.asSeconds();
-		std::cout << moved_y << std::endl;
-		if (moved_y >= 144) {
-			movedDistance = sf::Vector2f({0,0});
-			moved_y = 0;
-			movingToNextLevel = false;
-		}
-	}
 	checkCollisions();
 	heroine->update(delta);
 	for (auto wall : currentLevel.getWalls()) {
 		wall->update(delta);
 	}
+	changeLevels(delta);
 	return true;
 }
 
@@ -80,6 +71,44 @@ void Game::checkCollisions() {
 			} else if (heroine->getPosition().y > 126) {
 				heroine->setPosition(heroine->getPosition().x, heroine->getPosition().y - 2);
 			}
+		}
+	}
+}
+
+void Game::changeLevels(sf::Time delta) {
+	auto movement = 16 * delta.asSeconds();
+	if (movedDistance.y == 144) {
+		background.move(0, -movement);
+		moved_y += movement;
+		if (moved_y >= movedDistance.y) {
+			movedDistance = sf::Vector2f({0,0});
+			moved_y = 0;
+			movingToNextLevel = false;
+		}
+	} else if (movedDistance.y == -144) {
+		background.move(0, movement);
+		moved_y += movement;
+		if (moved_y >= movedDistance.y) {
+			movedDistance = sf::Vector2f({0,0});
+			moved_y = 0;
+			movingToNextLevel = false;
+		}
+	}
+	if (movedDistance.x == 160) {
+		background.move(-movement, 0);
+		moved_x += movement;
+		if (moved_x >= movedDistance.x) {
+			movedDistance = sf::Vector2f({0,0});
+			moved_x = 0;
+			movingToNextLevel = false;
+		}
+	} else if (movedDistance.x == 160) {
+		background.move(movement,0);
+		moved_x += movement;
+		if (moved_x >= movedDistance.x) {
+			movedDistance = sf::Vector2f({0,0});
+			moved_x = 0;
+			movingToNextLevel = false;
 		}
 	}
 }

@@ -22,6 +22,7 @@ public:
 	
 private:
 	void checkCollisions();
+	void changeLevels(sf::Time);
 	
 private:
 	sf::RenderWindow& window;

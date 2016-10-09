@@ -52,7 +52,15 @@ std::vector<EntityButton*> Level::getButtons() {
 void Level::openDoors() {
 	for (auto wall : getWalls()) {
 		if (wall->getType() == EntityWall::Type::outer_door) {
-			wall->setDirection(0,2);
+				if (wall->getFacing() == EntityWall::Facing::north) {
+					wall->setDirection(0,-2);
+				} else if (wall->getFacing() == EntityWall::Facing::south) {
+					wall->setDirection(0,2);
+				} else if (wall->getFacing() == EntityWall::Facing::west) {
+					wall->setDirection(-2,0);
+				} else if (wall->getFacing() == EntityWall::Facing::east) {
+					wall->setDirection(2,0);
+				}
 		}
 	}
 }
