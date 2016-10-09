@@ -1,5 +1,7 @@
 #include "../Include/Level.hpp"
 
+#include <iostream>
+
 Level::Level(std::string path) {
 	// load level data from string path
 	FileLevel currentLevel = FileManager::loadLevel(path);
@@ -45,4 +47,16 @@ std::vector<EntityButton*> Level::getButtons() {
 		}
 	}
 	return undeletedButtons;
+}
+
+void Level::openDoors() {
+	for (auto wall : getWalls()) {
+		if (wall->getType() == EntityWall::Type::outer_door) {
+			wall->setDirection(0,2);
+		}
+	}
+}
+
+void Level::moveToLevel(unsigned int lvl) {
+	
 }

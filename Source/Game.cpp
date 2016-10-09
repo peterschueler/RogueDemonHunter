@@ -5,10 +5,9 @@
 #include <string>
 #include <cstdlib>
 
-Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576), currentLevel(Level("Assets/Levels/one")) {
+Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576), currentLevel(Level("Assets/Levels/one")), viewPort(window.getDefaultView()), movedDistance({0,0}), movingToNextLevel(false) {
 	EntityHeroine* her = new EntityHeroine();
 	her->setPosition(50, 40);
-// 	her->setScale(2.f, 2.f);
 	heroine = std::move(her);
 	
 	std::string backgroundPath = "Assets/Textures/Background_Stage_01.png";
@@ -23,12 +22,26 @@ Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576
 }
 
 bool Game::update(sf::Time delta) {
+	if (movedDistance.y != 0) {
+		viewPort.move(0, 16 * delta.asSeconds());
+		moved_y += 16 * delta.asSeconds();
+		std::cout << moved_y << std::endl;
+		if (moved_y >= 144) {
+			movedDistance = sf::Vector2f({0,0});
+			moved_y = 0;
+			movingToNextLevel = false;
+		}
+	}
 	checkCollisions();
 	heroine->update(delta);
+	for (auto wall : currentLevel.getWalls()) {
+		wall->update(delta);
+	}
 	return true;
 }
 
 void Game::draw() {
+	window.setView(viewPort);
 	window.draw(background);
 	for (auto button : currentLevel.getButtons()) {
 		window.draw(*button);
@@ -45,13 +58,15 @@ void Game::input(Command* command) {
 }
 
 void Game::checkCollisions() {
-	// What needs to happen when the key is picked up?
-	// 1. key disappears
-	// 2. door opens: the tiles move until out of sight and then get removed
 	for (auto button : currentLevel.getButtons()) {
 		if (heroine->borders().intersects(button->borders())) {
 			button->setDeleted(true);
+			currentLevel.openDoors();
 		}
+	}
+	if (heroine->getPosition().y > 135 && movingToNextLevel == false) {
+		movedDistance = sf::Vector2f(0, 144);
+		movingToNextLevel = true;
 	}
 	for (auto wall : currentLevel.getWalls()) {
 		if (heroine->borders().intersects(wall->borders())) {

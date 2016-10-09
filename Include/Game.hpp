@@ -31,6 +31,11 @@ private:
 	
 	Level currentLevel;
 	
+	sf::Vector2f movedDistance;
+	float moved_y;
+	float moved_x;
+	bool movingToNextLevel;
+	
 	sf::View viewPort;
 	sf::Sprite background;
 	sf::Texture backgroundTexture;

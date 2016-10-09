@@ -6,7 +6,7 @@ EntityWall::EntityWall() {
 	attachTexture("Assets/Textures/Walls_Sheet_01.png");
 }
 
-EntityWall::EntityWall(int _x, int _y, int _type): type(EntityWall::Type(_type)) {
+EntityWall::EntityWall(int _x, int _y, int _type): type(EntityWall::Type(_type)), moving(0) {
 	setPosition(sf::Vector2f(_x, _y));
 	sf::FloatRect bounds = sprite.getLocalBounds();
 	sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
@@ -101,7 +101,26 @@ void EntityWall::attachTexture(std::string path) {
 }
 
 void EntityWall::update(sf::Time delta) {
-	move(direction * delta.asSeconds());
+	if (direction.x != 0) {
+		moving += direction.x * delta.asSeconds();
+		if (moving < 12) {
+			move(direction * delta.asSeconds());
+		} else {
+			setDeleted(true);
+			direction.x = 0;
+			moving = 0;
+		}
+	}
+	if (direction.y != 0) {
+		moving += direction.y * delta.asSeconds();
+		if (moving < 12) {
+			move(direction * delta.asSeconds());
+		} else {
+			setDeleted(true);
+			direction.y = 0;
+			moving = 0;
+		}
+	}
 }
 
 void EntityWall::setDirection(float vx, float vy) {
@@ -111,4 +130,8 @@ void EntityWall::setDirection(float vx, float vy) {
 
 sf::Vector2f EntityWall::getDirection() const {
 	return direction;
+}
+
+EntityWall::Type EntityWall::getType() const {
+	return type;
 }

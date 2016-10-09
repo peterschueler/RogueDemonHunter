@@ -15,6 +15,9 @@ public:
 	std::vector<EntityWall*> getWalls() const;
 	std::vector<EntityButton*> getButtons();
 	
+	void openDoors();
+	void moveToLevel(unsigned int);
+	
 private:
 	std::vector <EntityEnemy*> enemies;
 	std::vector <EntityWall*> walls;
