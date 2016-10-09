@@ -17,6 +17,7 @@ public:
 	
 	void openDoors();
 	void closeWalls();
+	void clearRoom();
 	bool moveToLevel(unsigned int);
 	
 private:

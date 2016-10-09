@@ -40,7 +40,7 @@ bool Entity::getDeleted() const {
 }
 
 void Entity::setColor(sf::Color col) {
-	color = col;
+	sprite.setColor(col);
 }
 
 void Entity::setGrounded(float bot) {

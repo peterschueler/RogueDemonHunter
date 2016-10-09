@@ -1,0 +1,16 @@
+# door
+wall=x:144 y:32 t:2
+wall=x:144 y:32 t:1
+wall=x:144 y:40 t:4
+wall=x:144 y:48 t:4
+wall=x:144 y:56 t:3
+wall=x:144 y:56 t:1
+# buttons
+button=x:40 y:20 t:0
+# monsters
+enemy=x:120 y:60 t:5
+enemy=x:90 y:40 t:5
+enemy=x:90 y:60 t:5
+enemy=x:70 y:80 t:2
+enemy=x:60 y:100 t:2
+enemy=x:120 y:110 t:2

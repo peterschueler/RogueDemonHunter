@@ -92,13 +92,14 @@ void Level::closeWalls() {
 	}
 }
 
+void Level::clearRoom() {
+	enemies.clear();
+	buttons.clear();
+}
+
 bool Level::moveToLevel(unsigned int lvl) {
 	std::string path = "Assets/Levels/" + std::to_string(lvl);
 	FileLevel level = FileManager::loadLevel(path);
-	// 1. clear enemies
-	enemies.clear();
-	// 2. clear buttons
-	buttons.clear();
 	// 3. set new door
 	for (auto wall : walls) {
 		for (auto door : level.walls) {

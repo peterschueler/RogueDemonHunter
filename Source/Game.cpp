@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <random>
 
 Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576), level(Level(1)), viewPort(window.getDefaultView()), movedDistance({0,0}), movingToNextLevel(false), currentLevel(1), monsterLoop(0) {
 	EntityHeroine* her = new EntityHeroine();
@@ -28,6 +29,18 @@ Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576
 }
 
 bool Game::update(sf::Time delta) {
+	 // TODO: find a place to call this (-> menu!)
+		for (auto enemy : level.getEnemies()) {
+			enemy->setColor(sf::Color(170,190,15));
+		}
+		for (auto wall : level.getWalls()) {
+			wall->setColor(sf::Color(170,190,15));
+		}
+		for (auto button : level.getButtons()) {
+			button->setColor(sf::Color(170,190,15));
+		}
+		heroine->setColor(sf::Color(170,190,15));
+		background.setColor(sf::Color(170,190,15));
 	checkCollisions();
 	moveMonsters(delta);
 	if (!movingToNextLevel) {
@@ -93,18 +106,22 @@ void Game::changeLevels(sf::Time delta) {
 			movedDistance = sf::Vector2f(0, 144);
 			heroine->setPosition(heroine->getPosition().x, 124);
 			movingToNextLevel = true;
+			level.clearRoom();
 		} else if (heroine->getPosition().y < 9) {
 			movedDistance = sf::Vector2f(0, -144);
 			heroine->setPosition(heroine->getPosition().x, 18);
 			movingToNextLevel = true;
+			level.clearRoom();
 		} else if (heroine->getPosition().x > 151) {
 			movedDistance = sf::Vector2f(160, 0);
 			heroine->setPosition(142, heroine->getPosition().y);
 			movingToNextLevel = true;
+			level.clearRoom();
 		} else if (heroine->getPosition().x < 9) {
 			movedDistance = sf::Vector2f(-160, 0);
 			heroine->setPosition(18, heroine->getPosition().y);
 			movingToNextLevel = true;
+			level.clearRoom();
 		}
 	}
 	auto movement = 16 * delta.asSeconds();

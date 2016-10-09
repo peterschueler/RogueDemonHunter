@@ -1,6 +1,7 @@
 #include "../Include/EntityEnemy.hpp"
 
 #include <iostream>
+#include <random>
 
 EntityEnemy::EntityEnemy() {
 	attachTexture("Assets/Textures/Monsters_Sheet_01.png");
@@ -14,9 +15,19 @@ EntityEnemy::EntityEnemy(int _x, int _y, int _type): type(EntityEnemy::Type(_typ
 	sf::FloatRect bounds = sprite.getLocalBounds();
 	sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
 	
+	// Randomized floating head behavior
+	// http://stackoverflow.com/a/19728404
+	std::random_device rd;
+	std::mt19937 rng(rd());
+	std::uniform_int_distribution<int> uni(0,4);
+	valley_y = uni(rng);
+	
+	std::uniform_int_distribution<int> randomizer_dino(10,20);
+	std::uniform_int_distribution<int> randomizer_rat(2,4);
+	
 	if (type == ghoul) { walkingDirection = down; maxSteps = 24; }
-	if (type == dinosaur) { walkingDirection = left; maxSteps = 14; }
-	if (type == rat) { walkingDirection = right; maxSteps = 16; }
+	if (type == dinosaur) { walkingDirection = left; maxSteps = randomizer_dino(rng); }
+	if (type == rat) { walkingDirection = right; maxSteps = randomizer_rat(rng); }
 	if (type == eye) { walkingDirection = left; maxSteps = 8; }
 	if (type == floatingHead) { walkingDirection = left; maxSteps = 6; }
 }
@@ -84,6 +95,11 @@ void EntityEnemy::walk() {
 			}
 			break;
 		case rat:
+			if (walkingDirection == left) {
+				setDirection(-11, 0);
+			} else if (walkingDirection == right) {
+				setDirection(11, 0);
+			}
 			break;
 		case pig:
 			break;
@@ -118,6 +134,8 @@ void EntityEnemy::walk() {
 				valley_y = 3;
 			} else if (valley_y == 3) {
 				setDirection(9, -5);
+				valley_y = 0;
+			} else {
 				valley_y = 0;
 			}
 			break;
@@ -198,6 +216,9 @@ void EntityEnemy::animate() {
 		break;
 	case rat:
 		if (walkingDirection == left) {	
+			if (currentStep == right_first || currentStep == right_second) {
+				currentStep = left_first;
+			}
 			sprite.setScale({-1,1});
 			if (currentStep == left_first) {
 				sf::IntRect rect(16,16,16,8);
@@ -207,9 +228,14 @@ void EntityEnemy::animate() {
 				sf::IntRect rect(16,24,16,8);
 				sprite.setTextureRect(rect);
 				currentStep = left_first;
+			} else {
+				currentStep = left_first;
 			}
 		} else if (walkingDirection == right) {
-			sprite.setScale({-1,1});
+			if (currentStep == left_first || currentStep == left_second) {
+				currentStep = right_first;
+			}
+			sprite.setScale({1,1});
 			if (currentStep == right_first) {
 				sf::IntRect rect(16,16,16,8);
 				sprite.setTextureRect(rect);
@@ -217,6 +243,8 @@ void EntityEnemy::animate() {
 			} else if (currentStep == right_second) {
 				sf::IntRect rect(16,24,16,8);
 				sprite.setTextureRect(rect);
+				currentStep = right_first;
+			} else {
 				currentStep = right_first;
 			}
 		}
