@@ -30,6 +30,7 @@ public:
 	void setDirection(float, float);
 	sf::Vector2f getDirection() const;
 	
+	void setType(EntityWall::Type);
 	Type getType() const;
 	Facing getFacing() const;
 	

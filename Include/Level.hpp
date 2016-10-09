@@ -16,6 +16,7 @@ public:
 	std::vector<EntityButton*> getButtons();
 	
 	void openDoors();
+	void closeWalls();
 	void moveToLevel(unsigned int);
 	
 private:

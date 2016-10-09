@@ -23,7 +23,9 @@ Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576
 
 bool Game::update(sf::Time delta) {
 	checkCollisions();
-	heroine->update(delta);
+	if (!movingToNextLevel) {
+		heroine->update(delta);
+	}
 	for (auto wall : currentLevel.getWalls()) {
 		wall->update(delta);
 	}
@@ -55,10 +57,6 @@ void Game::checkCollisions() {
 			currentLevel.openDoors();
 		}
 	}
-	if (heroine->getPosition().y > 135 && movingToNextLevel == false) {
-		movedDistance = sf::Vector2f(0, 144);
-		movingToNextLevel = true;
-	}
 	for (auto wall : currentLevel.getWalls()) {
 		if (heroine->borders().intersects(wall->borders())) {
 			if (heroine->getPosition().x < 18) {
@@ -76,11 +74,31 @@ void Game::checkCollisions() {
 }
 
 void Game::changeLevels(sf::Time delta) {
+	if (movingToNextLevel == false) {
+		if (heroine->getPosition().y > 135) {
+			movedDistance = sf::Vector2f(0, 144);
+			heroine->setPosition(heroine->getPosition().x, 124);
+			movingToNextLevel = true;
+		} else if (heroine->getPosition().y < 9) {
+			movedDistance = sf::Vector2f(0, -144);
+			heroine->setPosition(heroine->getPosition().x, 18);
+			movingToNextLevel = true;
+		} else if (heroine->getPosition().x > 151) {
+			movedDistance = sf::Vector2f(160, 0);
+			heroine->setPosition(142, heroine->getPosition().y);
+			movingToNextLevel = true;
+		} else if (heroine->getPosition().x < 9) {
+			movedDistance = sf::Vector2f(-160, 0);
+			heroine->setPosition(18, heroine->getPosition().y);
+			movingToNextLevel = true;
+		}
+	}
 	auto movement = 16 * delta.asSeconds();
 	if (movedDistance.y == 144) {
 		background.move(0, -movement);
 		moved_y += movement;
 		if (moved_y >= movedDistance.y) {
+			currentLevel.closeWalls();
 			movedDistance = sf::Vector2f({0,0});
 			moved_y = 0;
 			movingToNextLevel = false;
@@ -89,6 +107,7 @@ void Game::changeLevels(sf::Time delta) {
 		background.move(0, movement);
 		moved_y += movement;
 		if (moved_y >= movedDistance.y) {
+			currentLevel.closeWalls();
 			movedDistance = sf::Vector2f({0,0});
 			moved_y = 0;
 			movingToNextLevel = false;
@@ -98,6 +117,7 @@ void Game::changeLevels(sf::Time delta) {
 		background.move(-movement, 0);
 		moved_x += movement;
 		if (moved_x >= movedDistance.x) {
+			currentLevel.closeWalls();
 			movedDistance = sf::Vector2f({0,0});
 			moved_x = 0;
 			movingToNextLevel = false;
@@ -106,6 +126,7 @@ void Game::changeLevels(sf::Time delta) {
 		background.move(movement,0);
 		moved_x += movement;
 		if (moved_x >= movedDistance.x) {
+			currentLevel.closeWalls();
 			movedDistance = sf::Vector2f({0,0});
 			moved_x = 0;
 			movingToNextLevel = false;

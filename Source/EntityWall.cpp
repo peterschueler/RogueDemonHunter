@@ -106,22 +106,32 @@ void EntityWall::attachTexture(std::string path) {
 }
 
 void EntityWall::update(sf::Time delta) {
+	auto maxMove = 0;
+	if (type == EntityWall::outer_door) {
+		maxMove = 36;
+	} else if (type == EntityWall::outer_second) {
+		maxMove = 24;
+	} else if (type == EntityWall::outer_third) {
+		maxMove = 24;
+	}
 	if (direction.x != 0) {
-		moving += direction.x * delta.asSeconds();
-		if (moving < 12) {
+		moving += 0.1;
+		if (moving < maxMove) {
 			move(direction * delta.asSeconds());
 		} else {
-			setDeleted(true);
+			if (type == EntityWall::outer_door) { setDeleted(true); }
+			if (type == EntityWall::outer_third || type == EntityWall:: outer_second) { setType(outer_first); }
 			direction.x = 0;
 			moving = 0;
 		}
 	}
 	if (direction.y != 0) {
-		moving += direction.y * delta.asSeconds();
-		if (moving < 12) {
+		moving += 0.1;
+		if (moving < maxMove) {
 			move(direction * delta.asSeconds());
 		} else {
-			setDeleted(true);
+			if (type == EntityWall::outer_door) { setDeleted(true); }
+			if (type == EntityWall::outer_third || type == EntityWall:: outer_second) { setType(outer_first); }
 			direction.y = 0;
 			moving = 0;
 		}
@@ -135,6 +145,11 @@ void EntityWall::setDirection(float vx, float vy) {
 
 sf::Vector2f EntityWall::getDirection() const {
 	return direction;
+}
+
+void EntityWall::setType(EntityWall::Type _type) {
+	type = _type;
+	attachTexture("Assets/Textures/Walls_Sheet_01.png");
 }
 
 EntityWall::Type EntityWall::getType() const {
