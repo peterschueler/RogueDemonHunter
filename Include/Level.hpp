@@ -9,7 +9,7 @@
 
 class Level {
 public:
-	Level(std::string);
+	Level(unsigned int);
 	
 	std::vector<EntityEnemy*> getEnemies();
 	std::vector<EntityWall*> getWalls() const;
@@ -17,7 +17,7 @@ public:
 	
 	void openDoors();
 	void closeWalls();
-	void moveToLevel(unsigned int);
+	bool moveToLevel(unsigned int);
 	
 private:
 	std::vector <EntityEnemy*> enemies;

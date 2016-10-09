@@ -5,10 +5,16 @@
 #include <string>
 #include <cstdlib>
 
-Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576), currentLevel(Level("Assets/Levels/one")), viewPort(window.getDefaultView()), movedDistance({0,0}), movingToNextLevel(false) {
+Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576), level(Level(1)), viewPort(window.getDefaultView()), movedDistance({0,0}), movingToNextLevel(false), currentLevel(1) {
 	EntityHeroine* her = new EntityHeroine();
 	her->setPosition(50, 40);
 	heroine = std::move(her);
+	
+	for (auto wall : level.getWalls()) {
+		if (wall->getType() == EntityWall::Type::outer_first || wall->getType() == EntityWall::Type::outer_second || wall->getType() == EntityWall::Type::outer_door || wall->getType() == EntityWall::Type::outer_third) {
+			std::cout << "wall x: " << wall->getPosition().x << " wall y: " << wall->getPosition().y << std::endl;
+		}
+	}
 	
 	std::string backgroundPath = "Assets/Textures/Background_Stage_01.png";
 	
@@ -26,7 +32,7 @@ bool Game::update(sf::Time delta) {
 	if (!movingToNextLevel) {
 		heroine->update(delta);
 	}
-	for (auto wall : currentLevel.getWalls()) {
+	for (auto wall : level.getWalls()) {
 		wall->update(delta);
 	}
 	changeLevels(delta);
@@ -36,12 +42,12 @@ bool Game::update(sf::Time delta) {
 void Game::draw() {
 	window.setView(viewPort);
 	window.draw(background);
-	for (auto button : currentLevel.getButtons()) {
+	for (auto button : level.getButtons()) {
 		window.draw(*button);
 	}
 	window.draw(*heroine);
 	
-	for (auto wall : currentLevel.getWalls()) {
+	for (auto wall : level.getWalls()) {
 		window.draw(*wall);
 	}
 }
@@ -51,13 +57,13 @@ void Game::input(Command* command) {
 }
 
 void Game::checkCollisions() {
-	for (auto button : currentLevel.getButtons()) {
+	for (auto button : level.getButtons()) {
 		if (heroine->borders().intersects(button->borders())) {
 			button->setDeleted(true);
-			currentLevel.openDoors();
+			level.openDoors();
 		}
 	}
-	for (auto wall : currentLevel.getWalls()) {
+	for (auto wall : level.getWalls()) {
 		if (heroine->borders().intersects(wall->borders())) {
 			if (heroine->getPosition().x < 18) {
 				heroine->setPosition(heroine->getPosition().x + 2, heroine->getPosition().y);	
@@ -98,38 +104,46 @@ void Game::changeLevels(sf::Time delta) {
 		background.move(0, -movement);
 		moved_y += movement;
 		if (moved_y >= movedDistance.y) {
-			currentLevel.closeWalls();
+			level.closeWalls();
 			movedDistance = sf::Vector2f({0,0});
 			moved_y = 0;
 			movingToNextLevel = false;
+			currentLevel++;
+			level.moveToLevel(currentLevel);
 		}
 	} else if (movedDistance.y == -144) {
 		background.move(0, movement);
 		moved_y += movement;
 		if (moved_y >= movedDistance.y) {
-			currentLevel.closeWalls();
+			level.closeWalls();
 			movedDistance = sf::Vector2f({0,0});
 			moved_y = 0;
 			movingToNextLevel = false;
+			currentLevel++;
+			level.moveToLevel(currentLevel);
 		}
 	}
 	if (movedDistance.x == 160) {
 		background.move(-movement, 0);
 		moved_x += movement;
 		if (moved_x >= movedDistance.x) {
-			currentLevel.closeWalls();
+			level.closeWalls();
 			movedDistance = sf::Vector2f({0,0});
 			moved_x = 0;
 			movingToNextLevel = false;
+			currentLevel++;
+			level.moveToLevel(currentLevel);
 		}
 	} else if (movedDistance.x == 160) {
 		background.move(movement,0);
 		moved_x += movement;
 		if (moved_x >= movedDistance.x) {
-			currentLevel.closeWalls();
+			level.closeWalls();
 			movedDistance = sf::Vector2f({0,0});
 			moved_x = 0;
 			movingToNextLevel = false;
+			currentLevel++;
+			level.moveToLevel(currentLevel);
 		}
 	}
 }

@@ -30,12 +30,13 @@ private:
 	
 	EntityHeroine* heroine;
 	
-	Level currentLevel;
+	Level level;
 	
 	sf::Vector2f movedDistance;
 	float moved_y;
 	float moved_x;
 	bool movingToNextLevel;
+	unsigned int currentLevel;
 	
 	sf::View viewPort;
 	sf::Sprite background;

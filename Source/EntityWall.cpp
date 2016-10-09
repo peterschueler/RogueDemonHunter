@@ -8,6 +8,7 @@ EntityWall::EntityWall() {
 
 EntityWall::EntityWall(int _x, int _y, int _type): type(EntityWall::Type(_type)), moving(0) {
 	setPosition(sf::Vector2f(_x, _y));
+	rawPosition = sf::Vector2f(_x, _y);
 	sf::FloatRect bounds = sprite.getLocalBounds();
 	sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
 	
@@ -149,6 +150,16 @@ sf::Vector2f EntityWall::getDirection() const {
 
 void EntityWall::setType(EntityWall::Type _type) {
 	type = _type;
+			if (rawPosition.y == 0) {
+			facing = north;
+		} else if (rawPosition.y == 136) {
+			facing = south;
+		} 
+		if (rawPosition.x == 144) {
+			facing = east;
+		} else if (rawPosition.x == 0) {
+			facing = west;
+		}
 	attachTexture("Assets/Textures/Walls_Sheet_01.png");
 }
 
@@ -158,4 +169,8 @@ EntityWall::Type EntityWall::getType() const {
 
 EntityWall::Facing EntityWall::getFacing() const {
 	return facing;
+}
+
+sf::Vector2f EntityWall::getRawPosition() const {
+	return rawPosition;
 }

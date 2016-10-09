@@ -33,6 +33,7 @@ public:
 	void setType(EntityWall::Type);
 	Type getType() const;
 	Facing getFacing() const;
+	sf::Vector2f getRawPosition() const;
 	
 protected:
 	void attachTexture(std::string);
@@ -42,6 +43,8 @@ private:
 	Facing facing;
 	
 	float moving;
+	
+	sf::Vector2f rawPosition;
 };
 
 #endif

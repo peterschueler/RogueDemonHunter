@@ -2,7 +2,8 @@
 
 #include <iostream>
 
-Level::Level(std::string path) {
+Level::Level(unsigned int lvl) {
+	std::string path = "Assets/Levels/" + std::to_string(lvl);
 	// load level data from string path
 	FileLevel currentLevel = FileManager::loadLevel(path);
 	for (auto wall : currentLevel.walls) {
@@ -13,10 +14,10 @@ Level::Level(std::string path) {
 		EntityEnemy* newEnemy = new EntityEnemy(enemy.x, enemy.y, enemy.type);
 		enemies.push_back(std::move(newEnemy));
 	}
-	 for (auto button : currentLevel.buttons) {
-			EntityButton* newButton = new EntityButton(button.x, button.y, button.type);
-			buttons.push_back(std::move(newButton));
-	 }
+	for (auto button : currentLevel.buttons) {
+		EntityButton* newButton = new EntityButton(button.x, button.y, button.type);
+		buttons.push_back(std::move(newButton));
+	}
 }
 
 std::vector<EntityEnemy*> Level::getEnemies() {
@@ -68,13 +69,58 @@ void Level::openDoors() {
 void Level::closeWalls() {
 	for (auto wall : getWalls()) {
 		if (wall->getType() == EntityWall::Type::outer_second) {
-			wall->setDirection(-2,0);
+			if (wall->getFacing() == EntityWall::Facing::south) {
+				wall->setDirection(2,0);
+			} else if (wall->getFacing() == EntityWall::Facing::north) {
+				wall->setDirection(-2,0);
+			} else if (wall->getFacing() == EntityWall::Facing::west) {
+				wall->setDirection(0, -2);
+			} else if (wall->getFacing() == EntityWall::Facing::east) {
+				wall->setDirection(0, 2);
+			}
 		} else if (wall->getType() == EntityWall::Type::outer_third) {
-			wall->setDirection(2,0);
+			if (wall->getFacing() == EntityWall::Facing::south) {
+				wall->setDirection(-2,0);
+			} else if (wall->getFacing() == EntityWall::Facing::north) {
+				wall->setDirection(2,0);
+			} else if (wall->getFacing() == EntityWall::Facing::west) {
+				wall->setDirection(0, 2);
+			} else if (wall->getFacing() == EntityWall::Facing::east) {
+				wall->setDirection(0, -2);
+			}
 		}
 	}
 }
 
-void Level::moveToLevel(unsigned int lvl) {
-	
+bool Level::moveToLevel(unsigned int lvl) {
+	std::string path = "Assets/Levels/" + std::to_string(lvl);
+	FileLevel level = FileManager::loadLevel(path);
+	// 1. clear enemies
+	enemies.clear();
+	// 2. clear buttons
+	buttons.clear();
+	// 3. set new door
+	for (auto wall : walls) {
+		for (auto door : level.walls) {
+			if (wall->getRawPosition().x == door.x && wall->getRawPosition().y == door.y) {
+				if (door.type == 1) {
+					walls.push_back(new EntityWall(door.x, door.y, door.type));
+				} else {
+					wall->setType(EntityWall::Type(door.type));
+				}
+			}
+		}
+	}
+	// 4. add new enemies
+	for (auto enemy : level.enemies) {
+		EntityEnemy* newEnemy = new EntityEnemy(enemy.x, enemy.y, enemy.type);
+		enemies.push_back(std::move(newEnemy));
+	}
+	// 5. add new buttons
+	for (auto button : level.buttons) {
+		EntityButton* newButton = new EntityButton(button.x, button.y, button.type);
+		buttons.push_back(std::move(newButton));
+	}
+	// 6. restart 
+	return true;
 }

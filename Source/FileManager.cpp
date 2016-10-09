@@ -15,14 +15,10 @@ std::vector<std::string> split_str(const std::string& string, char delimeter) {
 }
 
 FileLevel FileManager::loadLevel(const std::string& levelName) {
-	std::cout << "Level path front: " << levelName << std::endl;
 	FileLevel lvl;
 	lvl.name = levelName;
 	std::string path = levelName + ".lvl";
-	std::cout << "Level path back: " << path << std::endl;
 	std::vector<std::string> lines = FileManager::parseFile(path);
-	
-	for (auto line : lines) { std::cout << line << std::endl; }
 	
 	std::vector<std::vector<std::string> > cutLines;
 	
