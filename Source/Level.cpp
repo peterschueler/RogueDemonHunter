@@ -74,7 +74,7 @@ void Level::closeWalls() {
 			} else if (wall->getFacing() == EntityWall::Facing::north) {
 				wall->setDirection(-2,0);
 			} else if (wall->getFacing() == EntityWall::Facing::west) {
-				wall->setDirection(0, -2);
+				wall->setDirection(0, 2);
 			} else if (wall->getFacing() == EntityWall::Facing::east) {
 				wall->setDirection(0, 2);
 			}
@@ -84,7 +84,7 @@ void Level::closeWalls() {
 			} else if (wall->getFacing() == EntityWall::Facing::north) {
 				wall->setDirection(2,0);
 			} else if (wall->getFacing() == EntityWall::Facing::west) {
-				wall->setDirection(0, 2);
+				wall->setDirection(0, -2);
 			} else if (wall->getFacing() == EntityWall::Facing::east) {
 				wall->setDirection(0, -2);
 			}

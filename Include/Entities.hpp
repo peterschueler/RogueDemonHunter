@@ -8,7 +8,9 @@
 #include "EntityWall.hpp"
 #include "EntityEnemy.hpp"
 #include "EntityButton.hpp"
+#include "EntityHealthBar.hpp"
 /* <Insert New Class> */
+
 
 
 

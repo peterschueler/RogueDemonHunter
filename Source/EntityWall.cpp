@@ -18,7 +18,7 @@ EntityWall::EntityWall(int _x, int _y, int _type): type(EntityWall::Type(_type))
 		if (_y == 0) {
 			sprite.rotate(90.f);
 			setPosition({static_cast<float>(_x + 8), static_cast<float>(_y)});
-		} else if (_y == 136) {
+		} else if (_y == 120) {
 			sprite.rotate(270.f);
 			setPosition({static_cast<float>(_x), static_cast<float>(_y + 8)});
 		}
@@ -30,7 +30,7 @@ EntityWall::EntityWall(int _x, int _y, int _type): type(EntityWall::Type(_type))
 		if (_y == 0) {
 			sprite.rotate(90.f);
 			setPosition({static_cast<float>(_x + 8), static_cast<float>(_y)});
-		} else if (_y == 136) {
+		} else if (_y == 120) {
 			sprite.rotate(270.f);
 			setPosition({static_cast<float>(_x), static_cast<float>(_y + 8)});
 		}
@@ -42,7 +42,7 @@ EntityWall::EntityWall(int _x, int _y, int _type): type(EntityWall::Type(_type))
 		if (_y == 0) {
 			sprite.rotate(90.f);
 			setPosition({static_cast<float>(_x + 8), static_cast<float>(_y)});
-		} else if (_y == 136) {
+		} else if (_y == 120) {
 			sprite.rotate(270.f);
 			setPosition({static_cast<float>(_x), static_cast<float>(_y + 8)});
 		}
@@ -60,7 +60,7 @@ EntityWall::EntityWall(int _x, int _y, int _type): type(EntityWall::Type(_type))
 				setPosition({static_cast<float>(_x + 16), static_cast<float>(_y + 8)});
 			}
 		} else if (_x == 0) {
-			if (_y == 136) {
+			if (_y == 120) {
 				sprite.rotate(270.f);
 				setPosition({static_cast<float>(_x), static_cast<float>(_y + 8)});
 			}
@@ -70,7 +70,7 @@ EntityWall::EntityWall(int _x, int _y, int _type): type(EntityWall::Type(_type))
 			sprite.rotate(90.f);
 			setPosition({static_cast<float>(_x + 8), static_cast<float>(_y)});
 			facing = north;
-		} else if (_y == 136) {
+		} else if (_y == 120) {
 			sprite.rotate(270.f);
 			setPosition({static_cast<float>(_x), static_cast<float>(_y + 8)});
 			facing = south;
@@ -150,16 +150,16 @@ sf::Vector2f EntityWall::getDirection() const {
 
 void EntityWall::setType(EntityWall::Type _type) {
 	type = _type;
-			if (rawPosition.y == 0) {
-			facing = north;
-		} else if (rawPosition.y == 136) {
-			facing = south;
-		}
-		if (rawPosition.x == 144) {
-			facing = east;
-		} else if (rawPosition.x == 0) {
-			facing = west;
-		}
+	if (rawPosition.y == 0) {
+		facing = north;
+	} else if (rawPosition.y == 120) {
+		facing = south;
+	}
+	if (rawPosition.x == 144) {
+		facing = east;
+	} else if (rawPosition.x == 0) {
+		facing = west;
+	}
 	attachTexture("Assets/Textures/Walls_Sheet_01.png");
 }
 

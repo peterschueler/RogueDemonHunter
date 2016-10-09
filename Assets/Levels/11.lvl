@@ -1,0 +1,15 @@
+# door
+wall=x:144 y:32 t:2
+wall=x:144 y:32 t:1
+wall=x:144 y:40 t:4
+wall=x:144 y:48 t:4
+wall=x:144 y:56 t:3
+wall=x:144 y:56 t:1
+wall=x:144 y:88 t:2
+wall=x:144 y:88 t:1
+wall=x:144 y:96 t:4
+wall=x:144 y:104 t:4
+wall=x:144 y:112 t:3
+wall=x:144 y:112 t:1
+# buttons
+button=x:60 y:100 t:0

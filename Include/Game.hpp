@@ -30,6 +30,9 @@ private:
 	sf::FloatRect bounds;
 	
 	EntityHeroine* heroine;
+	EntityHealthBar* healthBar;
+	unsigned int currentHealth;
+	bool gameOver;
 	
 	Level level;
 	

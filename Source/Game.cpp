@@ -6,10 +6,14 @@
 #include <cstdlib>
 #include <random>
 
-Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576), level(Level(1)), viewPort(window.getDefaultView()), movedDistance({0,0}), movingToNextLevel(false), currentLevel(1), monsterLoop(0) {
+Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576), level(Level(1)), viewPort(window.getDefaultView()), movedDistance({0,0}), movingToNextLevel(false), currentLevel(1), monsterLoop(0), currentHealth(4), gameOver(false) {
 	EntityHeroine* her = new EntityHeroine();
 	her->setPosition(50, 40);
 	heroine = std::move(her);
+	
+	EntityHealthBar* bar = new EntityHealthBar();
+	bar->setPosition(0,128);
+	healthBar = std::move(bar);
 	
 	for (auto wall : level.getWalls()) {
 		if (wall->getType() == EntityWall::Type::outer_first || wall->getType() == EntityWall::Type::outer_second || wall->getType() == EntityWall::Type::outer_door || wall->getType() == EntityWall::Type::outer_third) {
@@ -41,10 +45,12 @@ bool Game::update(sf::Time delta) {
 		}
 		heroine->setColor(sf::Color(170,190,15));
 		background.setColor(sf::Color(170,190,15));
+		healthBar->setColor(sf::Color(170,190,15));
 	checkCollisions();
 	moveMonsters(delta);
 	if (!movingToNextLevel) {
 		heroine->update(delta);
+		healthBar->update(delta);	
 		for (auto enemy : level.getEnemies()) {
 			enemy->update(delta);
 		}
@@ -53,7 +59,7 @@ bool Game::update(sf::Time delta) {
 		wall->update(delta);
 	}
 	changeLevels(delta);
-	return true;
+	return !gameOver;
 }
 
 void Game::draw() {
@@ -71,6 +77,7 @@ void Game::draw() {
 	for (auto wall : level.getWalls()) {
 		window.draw(*wall);
 	}
+	window.draw(*healthBar);
 }
 
 void Game::input(Command* command) {
@@ -78,6 +85,21 @@ void Game::input(Command* command) {
 }
 
 void Game::checkCollisions() {
+	for (auto enemy : level.getEnemies()) {
+		if (heroine->borders().intersects(enemy->borders())) {
+			currentHealth--;
+			healthBar->setHealth(currentHealth);
+			if (enemy->getDirection().x != 0) {
+				heroine->setPosition(enemy->getPosition().x + (3 * enemy->getDirection().x), heroine->getPosition().y); 
+			} else if (enemy->getDirection().y != 0) {
+				heroine->setPosition(enemy->getPosition().x, heroine->getPosition().y + (3 * enemy->getDirection().x)); 
+			}
+			if (currentHealth == 0) {
+				gameOver = true;
+			}
+		}
+	}
+	
 	for (auto button : level.getButtons()) {
 		if (heroine->borders().intersects(button->borders())) {
 			button->setDeleted(true);
@@ -93,7 +115,7 @@ void Game::checkCollisions() {
 			}
 			if (heroine->getPosition().y < 18) {
 				heroine->setPosition(heroine->getPosition().x, heroine->getPosition().y + 2);
-			} else if (heroine->getPosition().y > 126) {
+			} else if (heroine->getPosition().y > 118) {
 				heroine->setPosition(heroine->getPosition().x, heroine->getPosition().y - 2);
 			}
 		}
@@ -102,13 +124,13 @@ void Game::checkCollisions() {
 
 void Game::changeLevels(sf::Time delta) {
 	if (movingToNextLevel == false) {
-		if (heroine->getPosition().y > 135) {
-			movedDistance = sf::Vector2f(0, 144);
+		if (heroine->getPosition().y > 127) {
+			movedDistance = sf::Vector2f(0, 120);
 			heroine->setPosition(heroine->getPosition().x, 124);
 			movingToNextLevel = true;
 			level.clearRoom();
-		} else if (heroine->getPosition().y < 9) {
-			movedDistance = sf::Vector2f(0, -144);
+		} else if (heroine->getPosition().y < 8) {
+			movedDistance = sf::Vector2f(0, -120);
 			heroine->setPosition(heroine->getPosition().x, 18);
 			movingToNextLevel = true;
 			level.clearRoom();
@@ -125,7 +147,7 @@ void Game::changeLevels(sf::Time delta) {
 		}
 	}
 	auto movement = 16 * delta.asSeconds();
-	if (movedDistance.y == 144) {
+	if (movedDistance.y == 120) {
 		background.move(0, -movement);
 		moved_y += movement;
 		if (moved_y >= movedDistance.y) {
@@ -135,10 +157,10 @@ void Game::changeLevels(sf::Time delta) {
 			currentLevel++;
 			movingToNextLevel = !level.moveToLevel(currentLevel);
 		}
-	} else if (movedDistance.y == -144) {
+	} else if (movedDistance.y == -120) {
 		background.move(0, movement);
-		moved_y += movement;
-		if (moved_y >= movedDistance.y) {
+		moved_y -= movement;
+		if (moved_y <= movedDistance.y) {
 			level.closeWalls();
 			movedDistance = sf::Vector2f({0,0});
 			moved_y = 0;
@@ -156,10 +178,10 @@ void Game::changeLevels(sf::Time delta) {
 			currentLevel++;
 			movingToNextLevel = !level.moveToLevel(currentLevel);
 		}
-	} else if (movedDistance.x == 160) {
+	} else if (movedDistance.x == -160) {
 		background.move(movement,0);
-		moved_x += movement;
-		if (moved_x >= movedDistance.x) {
+		moved_x -= movement;
+		if (moved_x <= movedDistance.x) {
 			level.closeWalls();
 			movedDistance = sf::Vector2f({0,0});
 			moved_x = 0;
