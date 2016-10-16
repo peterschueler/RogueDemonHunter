@@ -66,6 +66,10 @@ private:
 	sf::Sound healthSound;
 	sf::SoundBuffer keyBuffer;
 	sf::Sound keySound;
+	sf::SoundBuffer transitionBuffer;
+	sf::Sound transitionSound;
+	
+	bool transitionSoundPlaying;
 };
 
 #endif

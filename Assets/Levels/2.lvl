@@ -16,4 +16,4 @@ enemy=x:90 y:60 t:5
 enemy=x:100 y:110 t:5
 enemy=x:105 y:60 t:5
 enemy=x:130 y:40 t:5
-enemy=x:140 y:75 t:5
+enemy=x:130 y:75 t:5

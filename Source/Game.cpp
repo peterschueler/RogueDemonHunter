@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <random>
 
-Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576), level(Level(1)), viewPort(window.getDefaultView()), movedDistance({0,0}), movingToNextLevel(false), currentLevel(1), monsterLoop(0), currentHealth(4), gameOver(false), didWin(false), bossPoints(4), bossScaler(7) {
+Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576), level(Level(1)), viewPort(window.getDefaultView()), movedDistance({0,0}), movingToNextLevel(false), currentLevel(1), monsterLoop(0), currentHealth(4), gameOver(false), didWin(false), bossPoints(4), bossScaler(7), transitionSoundPlaying(false) {
 	EntityHeroine* her = new EntityHeroine();
 	her->setPosition(50, 40);
 	heroine = std::move(her);
@@ -44,6 +44,12 @@ Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576
 		std::cerr << "Sorry, couldn't load your sound effect." << std::endl;
 	}
 	keySound.setBuffer(keyBuffer);
+	
+	if (!transitionBuffer.loadFromFile("Assets/Sounds/Level_Transition_01.ogg")) {
+		std::cerr << "Sorry, couldn't load your sound effect." << std::endl;
+	}
+	transitionSound.setBuffer(transitionBuffer);
+	transitionSound.setLoop(true);
 	
 	setLevelCounter(currentLevel);
 }
@@ -190,6 +196,11 @@ void Game::changeLevels(sf::Time delta) {
 			movingToNextLevel = true;
 			level.clearRoom();
 		}
+	} else {
+		if (!transitionSoundPlaying) {
+			transitionSoundPlaying = true;
+			transitionSound.play();
+		}
 	}
 	auto movement = 16 * delta.asSeconds();
 	if (movedDistance.y == 144) {
@@ -201,6 +212,10 @@ void Game::changeLevels(sf::Time delta) {
 			moved_y = 0;
 			currentLevel++;
 			movingToNextLevel = !level.moveToLevel(currentLevel);
+			if (transitionSoundPlaying) {
+				transitionSoundPlaying = false;
+				transitionSound.stop();
+			}
 		}
 	} else if (movedDistance.y == -144) {
 		background.move(0, movement);
@@ -211,6 +226,10 @@ void Game::changeLevels(sf::Time delta) {
 			moved_y = 0;
 			currentLevel++;
 			movingToNextLevel	 = !level.moveToLevel(currentLevel);
+			if (transitionSoundPlaying) {
+				transitionSoundPlaying = false;
+				transitionSound.stop();
+			}
 		}
 	}
 	if (movedDistance.x == 160) {
@@ -222,6 +241,10 @@ void Game::changeLevels(sf::Time delta) {
 			moved_x = 0;
 			currentLevel++;
 			movingToNextLevel = !level.moveToLevel(currentLevel);
+			if (transitionSoundPlaying) {
+				transitionSoundPlaying = false;
+				transitionSound.stop();
+			}
 		}
 	} else if (movedDistance.x == -160) {
 		background.move(movement,0);
@@ -232,6 +255,10 @@ void Game::changeLevels(sf::Time delta) {
 			moved_x = 0;
 			currentLevel++;
 			movingToNextLevel = !level.moveToLevel(currentLevel);
+			if (transitionSoundPlaying) {
+				transitionSoundPlaying = false;
+				transitionSound.stop();
+			}
 		}
 	}
 	setLevelCounter(currentLevel);
