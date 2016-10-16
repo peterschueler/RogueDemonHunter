@@ -10,6 +10,8 @@ Arrow Keys. That's all there is. Pick up the keys and hearts by walking over the
 
 ### How To Play
 
+Install [SFML](http://www.sfml-dev.org/download.php)
+
 From the command line:
 
 mkdir build && cd build
