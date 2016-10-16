@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <random>
 
-Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576), level(Level(1)), viewPort(window.getDefaultView()), movedDistance({0,0}), movingToNextLevel(false), currentLevel(1), monsterLoop(0), currentHealth(4), gameOver(false), didWin(false), bossPoints(4) {
+Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576), level(Level(1)), viewPort(window.getDefaultView()), movedDistance({0,0}), movingToNextLevel(false), currentLevel(1), monsterLoop(0), currentHealth(4), gameOver(false), didWin(false), bossPoints(4), bossScaler(7) {
 	EntityHeroine* her = new EntityHeroine();
 	her->setPosition(50, 40);
 	heroine = std::move(her);
@@ -138,6 +138,8 @@ void Game::checkCollisions() {
 				keySound.play();
 			} else {
 				bossPoints--;
+				bossScaler = bossScaler - 2;
+				level.setBossScale(bossScaler);
 				if (bossPoints == 0) {
 					didWin = true;
 					gameOver = true;

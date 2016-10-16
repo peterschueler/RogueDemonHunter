@@ -19,6 +19,7 @@ public:
 	void closeWalls();
 	void clearRoom();
 	bool moveToLevel(unsigned int);
+	void setBossScale(int);
 	
 private:
 	std::vector <EntityEnemy*> enemies;

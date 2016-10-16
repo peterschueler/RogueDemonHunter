@@ -9,10 +9,11 @@ wall=x:144 y:80 t:3
 button=x:40 y:20 t:0
 # monsters
 enemy=x:30 y:20 t:5
-enemy=x:120 y:40 t:5
-enemy=x:90 y:60 t:5
-enemy=x:70 y:80 t:5
-enemy=x:40 y:70 t:5
-enemy=x:120 y:90 t:5
-enemy=x:100 y:110 t:5
 enemy=x:30 y:50 t:5
+enemy=x:40 y:70 t:5
+enemy=x:70 y:80 t:5
+enemy=x:90 y:60 t:5
+enemy=x:100 y:110 t:5
+enemy=x:105 y:60 t:5
+enemy=x:130 y:40 t:5
+enemy=x:140 y:75 t:5

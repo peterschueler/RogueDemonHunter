@@ -146,12 +146,14 @@ bool FileManager::saveLevel(const FileLevel& level) {
 		std::string output = std::string("x:") + std::to_string(wall.x) + std::string(" y:") + std::to_string(wall.y) + std::string(" type:") + std::to_string(wall.type) + "\n";
 		levelFile << output;
 	}
+	return true;
 }
 
 void FileManager::loadSettings(const std::string&) {
 }
 
 bool FileManager::saveSettings(const Settings&) {
+	return false;
 }
 
 std::vector<std::string> FileManager::parseFile(const std::string& path) {

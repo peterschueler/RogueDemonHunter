@@ -42,6 +42,7 @@ private:
 	bool gameOver;
 	bool didWin;
 	int bossPoints;
+	int bossScaler;
 	
 	Level level;
 	

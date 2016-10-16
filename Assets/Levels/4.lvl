@@ -10,6 +10,8 @@ button=x:40 y:20 t:0
 button=x:30 y:100 t:1
 # monsters
 enemy=x:120 y:60 t:5
+enemy=x:120 y:40 t:5
+enemy=x:140 y:40 t:0
 enemy=x:90 y:40 t:5
 enemy=x:90 y:60 t:5
 enemy=x:40 y:70 t:5

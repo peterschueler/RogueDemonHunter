@@ -11,5 +11,12 @@ button=x:120 y:30 t:1
 # enemies
 enemy=x:50 y:100 t:4
 enemy=x:50 y:80 t:4
+enemy=x:60 y:70 t:4
+enemy=x:70 y:40 t:2
+enemy=x:80 y:50 t:2
 enemy=x:80 y:60 t:4
+enemy=x:80 y:85 t:4
+enemy=x:110 y:80 t:0
 enemy=x:120 y:60 t:0
+enemy=x:130 y:70 t:0
+enemy=x:140 y:50 t:0

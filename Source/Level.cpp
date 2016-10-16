@@ -93,6 +93,7 @@ void Level::closeWalls() {
 }
 
 void Level::clearRoom() {
+	
 	enemies.clear();
 	buttons.clear();
 }
@@ -102,6 +103,11 @@ bool Level::moveToLevel(unsigned int lvl) {
 	FileLevel level = FileManager::loadLevel(path);
 	// 3. set new door
 	for (auto wall : walls) {
+		if (lvl == 10) {
+			if (wall->getRawPosition().x == 144) {
+				wall->setDeleted(true);
+			}
+		}
 		for (auto door : level.walls) {
 			if (wall->getRawPosition().x == door.x && wall->getRawPosition().y == door.y) {
 				walls.push_back(new EntityWall(door.x, door.y, door.type));
@@ -117,8 +123,8 @@ bool Level::moveToLevel(unsigned int lvl) {
 	// 4. add new enemies
 	for (auto enemy : level.enemies) {
 		EntityEnemy* newEnemy = new EntityEnemy(enemy.x, enemy.y, enemy.type);
-		if (lvl == 8) {
-			newEnemy->setScale(7.f, 7.f);
+		if (lvl == 12) {
+			newEnemy->setScale(9.f, 9.f);
 		}
 		enemies.push_back(std::move(newEnemy));
 	}
@@ -129,4 +135,10 @@ bool Level::moveToLevel(unsigned int lvl) {
 	}
 	// 6. restart 
 	return true;
+}
+
+void Level::setBossScale(int scale) {
+	for (auto enemy : getEnemies()) {
+		enemy->setScale(scale, scale);
+	}
 }
