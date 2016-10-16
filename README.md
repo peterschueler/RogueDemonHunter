@@ -13,5 +13,7 @@ Arrow Keys. That's all there is. Pick up the keys and hearts by walking over the
 From the command line:
 
 mkdir build && cd build
+
 cmake .. && make
+
 ./RogueDemonHunter
