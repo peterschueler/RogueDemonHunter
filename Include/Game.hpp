@@ -27,9 +27,14 @@ private:
 	void changeLevels(sf::Time);
 	void moveMonsters(sf::Time);
 	
+	void setLevelCounter(unsigned int);
+	
 private:
 	sf::RenderWindow& window;
 	sf::FloatRect bounds;
+		
+	sf::Sprite levelCounter;
+	sf::Texture levelCounterTexture;
 	
 	EntityHeroine* heroine;
 	EntityHealthBar* healthBar;

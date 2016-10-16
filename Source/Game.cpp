@@ -44,6 +44,8 @@ Game::Game(sf::RenderWindow& window) : window(window), bounds(0.f, 0.f, 480, 576
 		std::cerr << "Sorry, couldn't load your sound effect." << std::endl;
 	}
 	keySound.setBuffer(keyBuffer);
+	
+	setLevelCounter(currentLevel);
 }
 
 bool Game::update(sf::Time delta) {
@@ -92,6 +94,7 @@ void Game::draw() {
 		window.draw(*wall);
 	}
 	window.draw(*healthBar);
+	window.draw(levelCounter);
 }
 
 void Game::input(Command* command) {
@@ -229,6 +232,7 @@ void Game::changeLevels(sf::Time delta) {
 			movingToNextLevel = !level.moveToLevel(currentLevel);
 		}
 	}
+	setLevelCounter(currentLevel);
 }
 
 void Game::moveMonsters(sf::Time delta) {
@@ -239,4 +243,52 @@ void Game::moveMonsters(sf::Time delta) {
 			monsterLoop = 0;
 		}
 	}
+}
+
+void Game::setLevelCounter(unsigned int lvl) {
+	std::string levelCounterPath = "Assets/Textures/Levelcounter_01.png";
+	if (levelCounterTexture.loadFromFile(levelCounterPath)) {
+		levelCounter.setTexture(levelCounterTexture);
+	} else {
+		std::cerr << "ERROR! Couldn't load texture!" << std::endl;
+	}
+	switch (lvl) {
+		case 1:
+			levelCounter.setTextureRect(sf::IntRect(0,0,16,8));
+			break;
+		case 2:
+			levelCounter.setTextureRect(sf::IntRect(16,0,16,8));
+			break;
+		case 3:
+			levelCounter.setTextureRect(sf::IntRect(32,0,16,8));
+			break;
+		case 4:
+			levelCounter.setTextureRect(sf::IntRect(0,8,16,8));
+			break;
+		case 5:
+			levelCounter.setTextureRect(sf::IntRect(16,8,16,8));
+			break;
+		case 6:
+			levelCounter.setTextureRect(sf::IntRect(32,8,16,8));
+			break;
+		case 7:
+			levelCounter.setTextureRect(sf::IntRect(0,16,16,8));
+			break;
+		case 8:
+			levelCounter.setTextureRect(sf::IntRect(16,16,16,8));
+			break;
+		case 9:
+			levelCounter.setTextureRect(sf::IntRect(32,16,16,8));
+			break;
+		case 10:
+			levelCounter.setTextureRect(sf::IntRect(0,24,16,8));
+			break;
+		case 11:
+			levelCounter.setTextureRect(sf::IntRect(16,24,16,8));
+			break;
+		case 12:
+			levelCounter.setTextureRect(sf::IntRect(32,24,16,8));
+			break;
+	}
+	levelCounter.setPosition(12, 127);
 }
