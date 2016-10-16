@@ -7,6 +7,17 @@
 
 class EntityEnemy : public Entity {
 public:
+	enum Type {
+		ghoul,
+		dinosaur,
+		rat,
+		pig,
+		eye,
+		floatingHead,
+		vampire,
+		undefined
+	};
+public:
 	EntityEnemy();
 	// x, y, type
 	EntityEnemy(int, int, int);
@@ -14,6 +25,8 @@ public:
 	
 	void setDirection(float, float);
 	sf::Vector2f getDirection() const;
+	
+	EntityEnemy::Type getType() const { return type; }
 	
 	void walk();
 	
@@ -34,17 +47,7 @@ private:
 		right
 	};
 	Direction walkingDirection;
-	
-	enum Type {
-		ghoul,
-		dinosaur,
-		rat,
-		pig,
-		eye,
-		floatingHead,
-		vampire,
-		undefined
-	};
+
 	Type type;
 	
 	enum AnimationStep {

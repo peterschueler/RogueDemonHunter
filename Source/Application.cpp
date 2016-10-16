@@ -5,11 +5,11 @@
 const sf::Time Application::secondsFramesRatio = sf::seconds(1.f/60.f);
 
 Application::Application() : window(sf::VideoMode(160,136), "RogueDemonHunter") {
-	enterState(new GameState(window));
+	enterState(new MenuState(window));
 }
 
 Application::Application(Settings& newSettings) : window(sf::VideoMode(newSettings.display_y, newSettings.display_x), newSettings.display_title) {
-	enterState(new GameState(window));
+	enterState(new MenuState(window));
 }
 
 void Application::run() {

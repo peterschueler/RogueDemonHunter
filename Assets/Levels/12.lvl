@@ -1,0 +1,5 @@
+enemy=x:80 y:60 t:4
+button=x:20 y:30 t:2
+button=x:20 y:100 t:3
+button=x:150 y:30 t:4
+button=x:150 y:100 t:5 

@@ -20,6 +20,8 @@ public:
 	void input(Command*);
 	void stop() {}
 	
+	bool getWin() { return didWin; };
+	
 private:
 	void checkCollisions();
 	void changeLevels(sf::Time);
@@ -33,6 +35,8 @@ private:
 	EntityHealthBar* healthBar;
 	unsigned int currentHealth;
 	bool gameOver;
+	bool didWin;
+	int bossPoints;
 	
 	Level level;
 	
@@ -47,6 +51,15 @@ private:
 	sf::View viewPort;
 	sf::Sprite background;
 	sf::Texture backgroundTexture;
+	
+	sf::SoundBuffer stepBuffer;
+	sf::Sound stepSound;
+	sf::SoundBuffer hitBuffer;
+	sf::Sound hitSound;
+	sf::SoundBuffer healthBuffer;
+	sf::Sound healthSound;
+	sf::SoundBuffer keyBuffer;
+	sf::Sound keySound;
 };
 
 #endif

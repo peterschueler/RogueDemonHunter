@@ -7,3 +7,5 @@ wall=x:144 y:80 t:3
 wall=x:144 y:80 t:1
 # buttons
 button=x:10 y:105 t:0
+button=x:50 y:50 t:1
+button=x:100 y:20 t:1

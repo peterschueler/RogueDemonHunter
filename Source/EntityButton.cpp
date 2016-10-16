@@ -17,8 +17,14 @@ void EntityButton::attachTexture(std::string path) {
 		rect = sf::IntRect(0,0,16,8);	
 	} else if (type == healthPod) {
 		rect = sf::IntRect(0,8,8,8);
-	} else if (type == pausePod) {
+	} else if (type == doom_one) {
 		rect = sf::IntRect(8,8,8,8);
+	} else if (type == doom_two) {
+		rect = sf::IntRect(16,8,8,8);
+	} else if (type == doom_three) {
+		rect = sf::IntRect(16,8,8,8);
+	} else if (type == doom_four) {
+		rect = sf::IntRect(24,8,8,8);
 	}
 	if (texture.loadFromFile(path)) {
 		sprite.setTexture(texture);
@@ -39,4 +45,8 @@ void EntityButton::setDirection(float vx, float vy) {
 
 sf::Vector2f EntityButton::getDirection() const {
 	return direction;
+}
+
+EntityButton::Type EntityButton::getType() const {
+	return type;
 }

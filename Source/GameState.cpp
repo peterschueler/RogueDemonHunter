@@ -1,5 +1,6 @@
 #include "../Include/GameState.hpp"
 #include "../Include/MenuState.hpp"
+#include "../Include/EndState.hpp"
 
 GameState::GameState(sf::RenderWindow& win) : window(&win), game(win), handler(), isPaused(false) {
 }
@@ -35,7 +36,7 @@ void GameState::onEntry(State* previousState) {
 }
 
 State* GameState::onExit() {
-	return new MenuState(*window);
+	return new EndState(*window, game.getWin());
 }
 
 void GameState::render() {

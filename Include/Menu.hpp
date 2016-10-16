@@ -17,8 +17,30 @@ public:
 	void stop() {}
 	
 private:
+	void animate();
+	
+private:
+	enum AnimationStep {
+		first,
+		second,
+		third,
+		fourth,
+		fifth,
+		sixth
+	};
+	AnimationStep currentStep;
+	float animationTimer;
+	
 	sf::RenderWindow& window;
 	sf::FloatRect bounds;
+	
+	sf::Music theme;
+	
+	sf::Sprite sprite;
+	sf::Texture texture;
+	
+	sf::Sprite blinky;
+	sf::Texture bl_texture;
 };
 
 #endif

@@ -70,21 +70,21 @@ void Level::closeWalls() {
 	for (auto wall : getWalls()) {
 		if (wall->getType() == EntityWall::Type::outer_second) {
 			if (wall->getFacing() == EntityWall::Facing::south) {
-				wall->setDirection(2,0);
-			} else if (wall->getFacing() == EntityWall::Facing::north) {
-				wall->setDirection(-2,0);
-			} else if (wall->getFacing() == EntityWall::Facing::west) {
-				wall->setDirection(0, 2);
-			} else if (wall->getFacing() == EntityWall::Facing::east) {
-				wall->setDirection(0, 2);
-			}
-		} else if (wall->getType() == EntityWall::Type::outer_third) {
-			if (wall->getFacing() == EntityWall::Facing::south) {
 				wall->setDirection(-2,0);
 			} else if (wall->getFacing() == EntityWall::Facing::north) {
 				wall->setDirection(2,0);
 			} else if (wall->getFacing() == EntityWall::Facing::west) {
 				wall->setDirection(0, -2);
+			} else if (wall->getFacing() == EntityWall::Facing::east) {
+				wall->setDirection(0, 2);
+			}
+		} else if (wall->getType() == EntityWall::Type::outer_third) {
+			if (wall->getFacing() == EntityWall::Facing::south) {
+				wall->setDirection(2,0);
+			} else if (wall->getFacing() == EntityWall::Facing::north) {
+				wall->setDirection(-2,0);
+			} else if (wall->getFacing() == EntityWall::Facing::west) {
+				wall->setDirection(0, 2);
 			} else if (wall->getFacing() == EntityWall::Facing::east) {
 				wall->setDirection(0, -2);
 			}
@@ -104,17 +104,22 @@ bool Level::moveToLevel(unsigned int lvl) {
 	for (auto wall : walls) {
 		for (auto door : level.walls) {
 			if (wall->getRawPosition().x == door.x && wall->getRawPosition().y == door.y) {
-				if (door.type == 1) {
-					walls.push_back(new EntityWall(door.x, door.y, door.type));
-				} else {
-					wall->setType(EntityWall::Type(door.type));
-				}
+				walls.push_back(new EntityWall(door.x, door.y, door.type));
+				wall->setType(EntityWall::Type(door.type));
+// 				if (door.type == 1) {
+// 					walls.push_back(new EntityWall(door.x, door.y, door.type));
+// 				} else {
+// 					wall->setType(EntityWall::Type(door.type));
+// 				}
 			}
 		}
 	}
 	// 4. add new enemies
 	for (auto enemy : level.enemies) {
 		EntityEnemy* newEnemy = new EntityEnemy(enemy.x, enemy.y, enemy.type);
+		if (lvl == 8) {
+			newEnemy->setScale(7.f, 7.f);
+		}
 		enemies.push_back(std::move(newEnemy));
 	}
 	// 5. add new buttons

@@ -1,9 +1,18 @@
 # door
 wall=x:24 y:120 t:1
-wall=x:24 y:120 t:3
+wall=x:24 y:120 t:2
 wall=x:32 y:120 t:4
 wall=x:40 y:120 t:4
 wall=x:48 y:120 t:1
-wall=x:48 y:120 t:2
+wall=x:48 y:120 t:3
 # buttons
 button=x:120 y:25 t:0
+# enemies
+enemy=x:30 y:20 t:2
+enemy=x:110 y:25 t:2
+enemy=x:60 y:40 t:2
+enemy=x:90 y:50 t:2
+enemy=x:70 y:60 t:2
+enemy=x:90 y:70 t:2
+enemy=x:85 y:70 t:2
+enemy=x:100 y:90 t:2
